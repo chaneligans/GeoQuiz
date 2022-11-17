@@ -35,10 +35,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
+            view.isClickable = false
         }
 
         binding.falseButton.setOnClickListener { view: View ->
             checkAnswer(false)
+            view.isClickable = false
         }
 
         binding.nextButton.setOnClickListener {
@@ -88,6 +90,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         binding.questionTextView.setText(questionTextResId)
+        binding.trueButton.isClickable = true
+        binding.falseButton.isClickable = true
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
