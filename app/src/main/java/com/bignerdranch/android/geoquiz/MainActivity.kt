@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     )
 
     private var currentIndex = 0
+    private var currentScore = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.previousButton.setOnClickListener {
-            currentIndex = (currentIndex - 1) % questionBank.size
+            currentIndex -= 1
+            if (currentIndex == -1) {
+                currentIndex = questionBank.size - 1
+            }
             updateQuestion()
         }
 
@@ -103,6 +107,24 @@ class MainActivity : AppCompatActivity() {
             R.string.incorrect_toast
         }
 
+        if (userAnswer == correctAnswer) {
+            currentScore += 1
+        }
+
         Snackbar.make(binding.questionTextView, messageResId, BaseTransientBottomBar.LENGTH_SHORT).show()
+
+        if (currentIndex == (questionBank.size - 1)) {
+            showScore()
+        }
+    }
+
+    private fun showScore() {
+        val scorePercentage = currentScore / questionBank.size
+        val scoreText = resources.getText(R.string.score_text)
+        Snackbar.make(
+            binding.questionTextView,
+            "$scoreText $scorePercentage%",
+            BaseTransientBottomBar.LENGTH_SHORT
+        ).show()
     }
 }
