@@ -24,14 +24,14 @@ class CheatActivity : AppCompatActivity() {
         binding = ActivityCheatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setAnswerShownResult(false)
+        cheatViewModel.userCheated = false
         cheatViewModel.answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
 
         binding.showAnswerButton.setOnClickListener {
             cheatViewModel.userCheated = true
             showAnswer()
         }
-
-        showAnswer()
     }
 
     private fun showAnswer() {

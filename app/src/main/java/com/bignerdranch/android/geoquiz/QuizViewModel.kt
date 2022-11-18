@@ -19,9 +19,10 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         Question(R.string.question_asia, true),
     )
 
-    var isCheater: Boolean
-        get() = savedStateHandle[IS_CHEATER_KEY] ?: false
-        set(value) = savedStateHandle.set(IS_CHEATER_KEY, value)
+    private val cheatIndices = mutableSetOf<Int>()
+
+    val isCheater: Boolean
+        get() = currentIndex in cheatIndices
 
     private var currentIndex: Int
         get() = savedStateHandle[CURRENT_INDEX_KEY] ?: 0
@@ -41,6 +42,12 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         currentIndex -= 1
         if (currentIndex == -1) {
             currentIndex = questionBank.size - 1
+        }
+    }
+
+    fun setQuestionCheatStatus(userCheated: Boolean) {
+        if (userCheated) {
+            cheatIndices.add(currentIndex)
         }
     }
 }
